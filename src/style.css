@@ -1,20 +1,38 @@
-*
-{
-    margin: 0;
-    padding: 0;
+@import url("https://fonts.googleapis.com/css2?family=Koulen&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body
-{
-    height: 100vh;
-    font-family: 'Poppins';
+body {
+  height: 100vh;
+  font-family: "Koulen", sans-serif;
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+body {
+  background-image: radial-gradient(
+    circle,
+    hsl(319, 67%, 66%) 0%,
+    rgb(161, 6, 94) 100%
+  );
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  pointer-events: none;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #fff;
+  text-align: center;
+  margin-top: 8rem;
+  margin-bottom: 10rem;
+  display: block;
+  padding: 20px;
 }
