@@ -1,13 +1,13 @@
 import "./style.css";
 import * as THREE from "three";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import textureImg from "./assets/textures/texture2.jpg";
 
 const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load(
-  "https://bruno-simon.com/prismic/matcaps/8.png"
-);
+const texture = textureLoader.load(textureImg);
 
 const MathFunction = (index) => {
-  return 0.1 * index ** 2;
+  return 0.04 * index ** 2;
 };
 
 // Canvas
@@ -18,7 +18,7 @@ const scene = new THREE.Scene();
 
 // Geometry
 const sphereGeometry = new THREE.SphereGeometry(0.5, 64, 64);
-const planeGeometry = new THREE.PlaneGeometry(10, 10);
+const planeGeometry = new THREE.PlaneGeometry(30, 30);
 
 // Materials
 
@@ -39,17 +39,17 @@ scene.add(plane);
 
 let spheres = [];
 let spheres2 = [];
-for (let index = 0; index < 8; index++) {
+for (let index = 0; index < 15; index++) {
   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
   sphere.position.y = MathFunction(index - 7);
-  sphere.position.x = index * 2 - 7;
+  sphere.position.x = index * 2 - 15;
   spheres = [...spheres, sphere];
   scene.add(sphere);
 }
-for (let index = 0; index < 8; index++) {
+for (let index = 0; index < 15; index++) {
   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
   sphere.position.y = MathFunction(index - 7);
-  sphere.position.z = index * 2 - 7;
+  sphere.position.z = index * 2 - 15;
   spheres2 = [...spheres2, sphere];
   scene.add(sphere);
 }
@@ -89,13 +89,13 @@ const camera = new THREE.PerspectiveCamera(
   100
 );
 const pivot = new THREE.Object3D();
-camera.position.z = 20;
+camera.position.z = 30;
 pivot.add(camera);
 scene.add(pivot);
 
-// Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+// // Controls;
+// const controls = new OrbitControls(camera, canvas);
+// controls.enableDamping = true;
 
 /**
  * Renderer
@@ -118,22 +118,28 @@ const tick = () => {
 
   // Update objects
   spheres.forEach((sph, index) => {
-    sph.rotation.x = 1 * elapsedTime;
-    sph.rotation.y = 1 * elapsedTime;
-    sph.rotation.z = 1 * elapsedTime;
-    sph.position.y = MathFunction(index - 3.5) * 7 * Math.sin(2 * elapsedTime);
+    sph.position.y =
+      0.5 +
+      7 *
+        MathFunction(index - 7) *
+        0.5 ** (elapsedTime - 1) *
+        Math.abs(
+          Math.cos((elapsedTime + MathFunction(index - 7)) * elapsedTime)
+        );
   });
   spheres2.forEach((sph, index) => {
-    sph.rotation.x = 1 * elapsedTime;
-    sph.rotation.y = 1 * elapsedTime;
-    sph.rotation.z = 1 * elapsedTime;
     sph.position.y =
-      -1 * MathFunction(index - 3.5) * 7 * Math.sin(2 * elapsedTime);
+      0.5 +
+      7 *
+        MathFunction(index - 7) *
+        0.5 ** (elapsedTime - 1) *
+        Math.abs(
+          Math.cos((elapsedTime + MathFunction(index - 7)) * elapsedTime)
+        );
   });
 
-  pivot.rotation.y = elapsedTime;
-  pivot.position.y = 0;
-  camera.position.z = 15 + Math.sin(elapsedTime) * 5;
+  pivot.rotation.y = Math.PI + elapsedTime * 0.25;
+  pivot.position.y = 5;
 
   // Render
   renderer.render(scene, camera);
